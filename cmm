@@ -1,0 +1,39 @@
+from abc import ABC, abstractmethod
+
+# Абстрактний клас Команди
+class Command(ABC):
+    @abstractmethod
+    def execute(self):
+        pass
+
+# Клас конкретної Команди
+class ConcreteCommand(Command):
+    def __init__(self, receiver, parameter):
+        self._receiver = receiver
+        self._parameter = parameter
+
+    def execute(self):
+        return self._receiver.action(self._parameter)
+
+# Клас Виконавця
+class Receiver:
+    def action(self, parameter):
+        return f"Receiver: Executing action with parameter {parameter}"
+
+# Об'єкт Відправника
+class Invoker:
+    def set_command(self, command):
+        self._command = command
+
+    def execute_command(self):
+        return self._command.execute()
+
+# Використання
+receiver = Receiver()
+command = ConcreteCommand(receiver, "command_parameter")
+
+invoker = Invoker()
+invoker.set_command(command)
+
+result = invoker.execute_command()
+print(result)
